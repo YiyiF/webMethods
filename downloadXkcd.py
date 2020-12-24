@@ -18,7 +18,7 @@ while iterCnt in range(10) and not url.endswith('#'):
     else:
         imageUrl = 'http:' + comicElem[0].get('src')
     # Download the image.
-    print('Downloading %sth image: %s' % (iterCnt, imageUrl))
+    print('Downloading %sth image: %s' % (iterCnt + 1, imageUrl))
     comicRes = requests.get(imageUrl)
     comicRes.raise_for_status()
     # Save the image to ./xccd.
