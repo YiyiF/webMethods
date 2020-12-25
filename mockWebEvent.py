@@ -2,7 +2,10 @@
 
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys
 import time, logging
+
 logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s - %(message)s')
 logging.disable(logging.DEBUG)
 
@@ -39,11 +42,29 @@ elemText = firstExtensionLink[0].text
 print('To click first extension: %s' % elemText)
 
 time.sleep(3)
-breadcrumbBtn = WebDriverWait(webdr, 10).until(lambda webdr: webdr.find_elements_by_link_text('扩展程序')) # 在10s内智能等待查找元素加载完成
-
 # breadcrumbBtn = webdr.find_elements_by_link_text('扩展程序')
-print('Breadcrumb button: %s' % breadcrumbBtn)
+breadcrumbBtn = WebDriverWait(webdr, 10).until(lambda webdr: webdr.find_elements_by_link_text('扩展程序')) # Wait find out the element every 0.5 secs for 10 secs
+# print('Breadcrumb button: %s' % breadcrumbBtn)
 breadcrumbBtn[0].click()
+
+time.sleep(5)
+newSearchBox = webdr.find_element_by_id('searchbox-input')
+print('Same searchbox before and after: %s' % searchBox == newSearchBox)
+newSearchBox.send_keys('Testing...')
+newSearchBox.send_keys(Keys.CONTROL, 'a')
+time.sleep(1)
+newSearchBox.send_keys(Keys.CONTROL, 'x')
+time.sleep(1)
+newSearchBox.send_keys(Keys.CONTROL, 'v')
+time.sleep(1)
+newSearchBox.send_keys((Keys.ENTER))
+
+time.sleep(3)
+webdr.back()
+
+slideShow3 = WebDriverWait(webdr, 10).until(lambda webdr: webdr.find_elements_by_css_selector('.i-Xa-U-S-ti'))
+ActionChains(webdr).move_to_element(slideShow3[2]).perform()
+
 time.sleep(5)
 webdr.quit()
 print('Mock done.')
